@@ -8,7 +8,7 @@ import 'data/game_data_provider.dart';
 void main() {
   runApp(MyApp());
 }
-
+//a
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -31,27 +31,44 @@ class MainScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Math Challenge'),
       ),
-      body: Column(
-        children: [
-          CurrentLevelAndXP(),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(height: 10),
-                  Text("게임 모드 선택", style: TextStyles.title2,),
-                  const SizedBox(height: 10),
-                  GameModeSelector(),
-                  const SizedBox(height: 20),
-                  Text("난이도 선택", style: TextStyles.title2,),
-                  const SizedBox(height: 10),
-                  GameDifficultySelector(),
-                ],
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          children: [
+            CurrentLevelAndXP(),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 10),
+                    Text("게임 모드 선택", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 10),
+                    GameModeSelector(
+                      options: [GameMode.fixedAmount.name, GameMode.continuous.name],
+                      images: ['assets/fixed_amount.png', 'assets/continuous.png'],
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                        width: 300,
+                        child: Text(style: TextStyles.regular, '"빨리빨리 수학"은 주어진 문제들을 시간 내에 풀어야 하는 모드이고, "어디까지 수학"은 문제들을 정확하게 계속 풀어나가야 하는 모드입니다.')),
+                    const SizedBox(height: 20),
+                    const Text("난이도 선택", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 10),
+                    GameDifficultySelector(
+                      options: [GameDifficulty.easy.name, GameDifficulty.normal.name, GameDifficulty.timesTable.name],
+                      images: ['assets/easy.png', 'assets/normal.png', 'assets/times_table.png'],
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                        width: 300,
+                        child: Text(style: TextStyles.regular, '"쉬움" 난이도는 초등학교 2학년 수준의 문제가 출제되며, "보통" 난이도는 초등학교 3학년 수준의 문제가 출제됩니다. "구구단"은 오직 구구단 문제만 나옵니다.')),
+                  ],
+                ),
               ),
             ),
-          ),
-          StartButton(),
-        ],
+            StartButton(),
+          ],
+        ),
       ),
     );
   }
@@ -99,10 +116,11 @@ class CurrentLevelAndXP extends StatelessWidget {
 }
 
 class GameModeSelector extends SelectorWidget {
-  GameModeSelector({super.key}) : super([GameMode.fixedAmount.name, GameMode.continuous.name]);
+  GameModeSelector({required List<String> options, required List<String> images, super.key})
+      : super(options, images, 150);
 
   @override
-  SelectorWidgetState<GameModeSelector> createState() => _GameModeSelectorState();
+  SelectorWidgetState createState() => _GameModeSelectorState();
 }
 
 class _GameModeSelectorState extends SelectorWidgetState<GameModeSelector> {
@@ -113,10 +131,11 @@ class _GameModeSelectorState extends SelectorWidgetState<GameModeSelector> {
 }
 
 class GameDifficultySelector extends SelectorWidget {
-  GameDifficultySelector({super.key}) : super([GameDifficulty.easy.name, GameDifficulty.normal.name, GameDifficulty.timesTable.name]);
+  GameDifficultySelector({required List<String> options, required List<String> images, super.key})
+      : super(options, images, 100);
 
   @override
-  SelectorWidgetState<GameDifficultySelector> createState() => _GameDifficultySelectorState();
+  SelectorWidgetState createState() => _GameDifficultySelectorState();
 }
 
 class _GameDifficultySelectorState extends SelectorWidgetState<GameDifficultySelector> {
