@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../data/game_data_provider.dart';
+import '../data/game_provider.dart';
 
 abstract class SelectorWidget extends StatefulWidget {
   final List<String> options;
