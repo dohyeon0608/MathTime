@@ -55,12 +55,13 @@ class ResultScreen extends StatelessWidget {
                   DataCell(Text(provider.difficulty.name)),
                 ],
               ),
-              DataRow(
-                cells: <DataCell>[
-                  DataCell(Text('총 문제')),
-                  DataCell(Text('${provider.submittedProblems}')),
-                ],
-              ),
+              if(provider.gameMode == GameMode.fixedAmount)
+                DataRow(
+                  cells: <DataCell>[
+                    DataCell(Text('총 문제')),
+                    DataCell(Text('${provider.submittedProblems}')),
+                  ],
+                ),
               DataRow(
                 cells: <DataCell>[
                   DataCell(Text('맞힌 문제')),
@@ -79,7 +80,8 @@ class ResultScreen extends StatelessWidget {
             Text('EXP +${provider.exp}', style: TextStyles.regular,),
             SizedBox(height: 10),
             Text('정답 제출 +${provider.correctXP} XP', style: TextStyles.small,),
-            Text('오답 제출 +${provider.incorrectXP} XP', style: TextStyles.small,),
+            if(provider.gameMode == GameMode.fixedAmount)
+              Text('오답 제출 +${provider.incorrectXP} XP', style: TextStyles.small,),
             Text('난이도 정확도 +${provider.difficultyXP} XP', style: TextStyles.small,),
             if(provider.gameMode == GameMode.fixedAmount)
               Text('시간 정확도 +${provider.timeXP} XP', style: TextStyles.small,),

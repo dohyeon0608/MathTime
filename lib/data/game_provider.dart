@@ -12,7 +12,7 @@ class GameProvider extends ChangeNotifier {
 
   void addXP(int xp) {
     _currentXP += xp;
-    if(_currentXP >= _requiredXP) {
+    while(_currentXP >= _requiredXP) {
       _currentXP -= _requiredXP;
       _level += 1;
       _requiredXP = 100 + 10 * _level;
@@ -61,13 +61,18 @@ class GameProvider extends ChangeNotifier {
   int get correctXP => correctProblems * 5;
   int get difficultyXP => correctProblems * extraExp;
   int get incorrectXP => incorrectProblems * 2;
-  int get timeXP => ((leftSeconds * 5 / 60) * pow((correctProblems / submittedProblems), 3)).round();
+  int get timeXP {
+    if (leftSeconds <= 0 || correctProblems < 0 || submittedProblems <= 0) {
+      return 0; // 기본값 설정
+    }
+    return ((leftSeconds / 4) * pow((correctProblems / submittedProblems), 3)).round();
+  }
   int get continuousXP => (pow(correctProblems * 5, 0.7)).round();
 
   int get exp {
-    int result = correctXP + difficultyXP + incorrectXP;
+    int result = correctXP + difficultyXP;
     if(gameMode == GameMode.fixedAmount) {
-      result += timeXP;
+      result += incorrectXP + timeXP;
     } else {
       result += continuousXP;
     }
@@ -88,21 +93,21 @@ class GameProvider extends ChangeNotifier {
     Random random = Random();
     String question = "";
     String answer = "";
+    int next(int min, int max) => min + random.nextInt(max - min);
 
     switch (_difficulty) {
       case GameDifficulty.easy:
         int type = random.nextInt(2); // 0: 덧셈, 1: 뺄셈, 2: 곱셈
         if (type == 0) {
-          int a = random.nextInt(100);
-          int b = random.nextInt(10);
+          int a = next(1, 99);
+          int b = next(0, 10);
           question = "$a + $b = ?";
           answer = "${a + b}";
         } else if (type == 1) {
-          int a = random.nextInt(100);
-          int n = random.nextInt((a+1 >= 100)? 100 : a+1);
-          int b = a - n;
+          int a = next(1, 99);
+          int b = next(0, 10);
           question = "$a - $b = ?";
-          answer = "$n";
+          answer = "${a - b}";
         } else if (type == 2) {
           int a = random.nextInt(10);
           int b = random.nextInt(10);

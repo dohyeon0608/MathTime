@@ -7,7 +7,11 @@ import 'package:provider/provider.dart';
 import '../data/game_provider.dart';
 
 class MainScreen extends StatelessWidget {
-  const MainScreen({super.key});
+  const MainScreen._privateConstructor();
+  static final MainScreen _instance = MainScreen._privateConstructor();
+
+  factory MainScreen() => _instance;
+
 
   @override
   Widget build(BuildContext context) {

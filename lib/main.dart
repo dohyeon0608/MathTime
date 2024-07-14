@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => GameProvider(),
-      child: const MaterialApp(
+      child: MaterialApp(
         title: 'Math Challenge',
         home: MainScreen(),
       ),

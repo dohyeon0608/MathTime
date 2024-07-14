@@ -91,12 +91,15 @@ class _ProblemScreenState extends State<ProblemScreen> {
   void endGame() {
     if (_gameMode == GameMode.fixedAmount) {
       _stopTimer();
-      if(isPaused) _leftTime = 0;
+      if (isPaused) _leftTime = 0;
       Provider.of<GameProvider>(context, listen: false).leftSeconds = _leftTime;
     }
-    Provider.of<GameProvider>(context, listen: false).correctProblems = correctProblems;
-    Provider.of<GameProvider>(context, listen: false).submittedProblems = submittedProblems;
-    Provider.of<GameProvider>(context, listen: false).addXP(Provider.of<GameProvider>(context, listen: false).exp);
+    Provider.of<GameProvider>(context, listen: false).correctProblems =
+        correctProblems;
+    Provider.of<GameProvider>(context, listen: false).submittedProblems =
+        submittedProblems;
+    Provider.of<GameProvider>(context, listen: false)
+        .addXP(Provider.of<GameProvider>(context, listen: false).exp);
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => ResultScreen()),
@@ -109,7 +112,7 @@ class _ProblemScreenState extends State<ProblemScreen> {
       isAnswered = true;
       isCorrect = userAnswer == answer;
       submittedProblems += 1;
-      if(isCorrect) correctProblems += 1;
+      if (isCorrect) correctProblems += 1;
     });
     Future.delayed(const Duration(seconds: 1), () {
       setState(() {
@@ -118,13 +121,15 @@ class _ProblemScreenState extends State<ProblemScreen> {
       if (_gameMode == GameMode.continuous && !isCorrect) {
         doEndGame = true;
       }
-      if (_gameMode == GameMode.fixedAmount && Provider.of<GameProvider>(context, listen: false).isLastProblem()) {
+      if (_gameMode == GameMode.fixedAmount &&
+          Provider.of<GameProvider>(context, listen: false).isLastProblem()) {
         doEndGame = true;
       }
-      if(doEndGame) {
+      if (doEndGame) {
         endGame();
       } else {
-        Provider.of<GameProvider>(context, listen: false).incrementProblemIndex();
+        Provider.of<GameProvider>(context, listen: false)
+            .incrementProblemIndex();
         generateQuestion();
         setState(() {
           userAnswer = "";
@@ -136,28 +141,31 @@ class _ProblemScreenState extends State<ProblemScreen> {
   Widget extraInfoWidget() {
     if (_gameMode == GameMode.fixedAmount) {
       return Expanded(
-        child: Container(
-          padding: EdgeInsets.all(20),
-          width: 300,
-          height: 100,
-          child: Stack(
-            children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                child: LinearProgressIndicator(
-                  color: Colors.lightBlue,
-                  value: (_leftTime / _totalTime),
-                  minHeight: 30,
-                ),
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.all(20),
+              width: 300,
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    child: LinearProgressIndicator(
+                      color: Colors.lightBlue,
+                      value: (_leftTime / _totalTime),
+                      minHeight: 30,
+                    ),
+                  ),
+                  Center(
+                    child: Text(
+                      '${Util.timeFormat(_leftTime)} 남음',
+                      style: const TextStyle(color: Colors.black38),
+                    ),
+                  ),
+                ],
               ),
-              Center(
-                child: Text(
-                  '${Util.timeFormat(_leftTime)} 남음',
-                  style: const TextStyle(color: Colors.black38),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     } else {}
@@ -173,7 +181,9 @@ class _ProblemScreenState extends State<ProblemScreen> {
           IconButton(
             icon: Icon(Icons.pause),
             onPressed: () {
-              togglePause();
+              if (!isAnswered) {
+                togglePause();
+              }
             },
           ),
         ],
@@ -187,7 +197,9 @@ class _ProblemScreenState extends State<ProblemScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                    (_gameMode == GameMode.fixedAmount)? '문제 ${Provider.of<GameProvider>(context, listen: false).currentProblemIndex}/${Provider.of<GameProvider>(context, listen: false).totalProblems}' : '문제 ${Provider.of<GameProvider>(context, listen: false).currentProblemIndex}',
+                    (_gameMode == GameMode.fixedAmount)
+                        ? '문제 ${Provider.of<GameProvider>(context, listen: false).currentProblemIndex}/${Provider.of<GameProvider>(context, listen: false).totalProblems}'
+                        : '문제 ${Provider.of<GameProvider>(context, listen: false).currentProblemIndex}',
                     textAlign: TextAlign.center,
                     style: TextStyles.problemTitle),
               ),
@@ -233,11 +245,12 @@ class _ProblemScreenState extends State<ProblemScreen> {
                           int key = ((index + 1) % 10);
                           return KeyPadButtonWidget(
                             onPressed: () {
-                              if(!isAnswered) {
+                              if (!isAnswered) {
                                 setState(() {
                                   userAnswer += key.toString();
                                 });
-                              };
+                              }
+                              ;
                             },
                             child: Text(key.toString(),
                                 style: TextStyles.buttonNumber),
@@ -245,7 +258,7 @@ class _ProblemScreenState extends State<ProblemScreen> {
                         } else if (index == 10) {
                           return KeyPadButtonWidget(
                             onPressed: () {
-                              if(!isAnswered){
+                              if (!isAnswered) {
                                 setState(() {
                                   if (userAnswer.isNotEmpty) {
                                     userAnswer = userAnswer.substring(
@@ -259,7 +272,7 @@ class _ProblemScreenState extends State<ProblemScreen> {
                         } else {
                           return KeyPadButtonWidget(
                             onPressed: () {
-                              if(!isAnswered) {
+                              if (!isAnswered) {
                                 checkAnswer();
                               }
                             },
@@ -284,7 +297,9 @@ class _ProblemScreenState extends State<ProblemScreen> {
               style: TextStyle(
                   fontSize: 150,
                   fontWeight: FontWeight.bold,
-                  color: (isCorrect)? Colors.lightBlueAccent.withAlpha(127): Colors.pinkAccent.withAlpha(127)),
+                  color: (isCorrect)
+                      ? Colors.lightBlueAccent.withAlpha(127)
+                      : Colors.pinkAccent.withAlpha(127)),
             )),
           if (isPaused)
             Positioned.fill(
