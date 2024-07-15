@@ -25,7 +25,7 @@ class GameDataManager {
   Future<void> loadData() async {
     await _initPrefs();
     if (!context.mounted) return;
-    Provider.of<GameProvider>(context, listen: false).level = _prefs.getInt('level') ?? 0;
+    Provider.of<GameProvider>(context, listen: false).level = _prefs.getInt('level') ?? 1;
     Provider.of<GameProvider>(context, listen: false).currentXP = _prefs.getInt('exp') ?? 0;
     Provider.of<GameProvider>(context, listen: false).refresh();
   }

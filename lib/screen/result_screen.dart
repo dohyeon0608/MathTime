@@ -6,7 +6,6 @@ import 'package:math_time/style/text_styles.dart';
 import 'package:math_time/util/util.dart';
 import 'package:provider/provider.dart';
 
-import '../main.dart';
 import 'main_screen.dart';
 
 class ResultScreen extends StatelessWidget {
