@@ -91,6 +91,7 @@ class _ProblemScreenState extends State<ProblemScreen> {
   void endGame() {
     if (_gameMode == GameMode.fixedAmount) {
       _stopTimer();
+      Provider.of<GameProvider>(context, listen: false).endedByPause = isPaused;
       if (isPaused) _leftTime = 0;
       Provider.of<GameProvider>(context, listen: false).leftSeconds = _leftTime;
     }

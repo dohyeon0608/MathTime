@@ -8,14 +8,14 @@ class GameProvider extends ChangeNotifier {
 
   int level = 1;
   int currentXP = 0;
-  int _requiredXP = 100;
+
+  bool endedByPause = false;
 
   void addXP(int xp) {
     currentXP += xp;
-    while(currentXP >= _requiredXP) {
-      currentXP -= _requiredXP;
+    while(currentXP >= requiredXP) {
+      currentXP -= requiredXP;
       level += 1;
-      _requiredXP = 100 + 10 * level;
     }
     notifyListeners();
   }
@@ -53,7 +53,7 @@ class GameProvider extends ChangeNotifier {
 
   GameMode get gameMode => _gameMode;
   GameDifficulty get difficulty => _difficulty;
-  int get requiredXP => _requiredXP;
+  int get requiredXP => 100 + level * 10;
   int get totalProblems => _totalProblemsPerDifficulty[_difficulty]!;
   int get totalSeconds => _totalSecondPerDifficulty[_difficulty]!;
   int get extraExp => _extraExpPerDifficulty[_difficulty]!;
@@ -62,7 +62,7 @@ class GameProvider extends ChangeNotifier {
 
   int get correctXP => correctProblems * 5;
   int get difficultyXP => correctProblems * extraExp;
-  int get incorrectXP => incorrectProblems * 2;
+  int get incorrectXP => (endedByPause)? 0 : incorrectProblems * 2;
   int get timeXP {
     if (leftSeconds <= 0 || correctProblems < 0 || submittedProblems <= 0) {
       return 0; // 기본값 설정
