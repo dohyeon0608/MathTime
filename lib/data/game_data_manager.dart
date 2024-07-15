@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 class GameDataManager {
   late SharedPreferences _prefs;
   BuildContext context;
+  static bool isLoaded = false;
 
   GameDataManager(this.context) {
     _initPrefs();
@@ -25,16 +26,18 @@ class GameDataManager {
   Future<void> loadData() async {
     await _initPrefs();
     if (!context.mounted) return;
+    if (isLoaded) return;
     Provider.of<GameProvider>(context, listen: false).level = _prefs.getInt('level') ?? 1;
     Provider.of<GameProvider>(context, listen: false).currentXP = _prefs.getInt('exp') ?? 0;
     Provider.of<GameProvider>(context, listen: false).refresh();
+    isLoaded = true;
   }
 
   Future<void> saveData() async {
     await _initPrefs();
     if (!context.mounted) return;
     _prefs.setInt('level', Provider.of<GameProvider>(context, listen: false).level);
-    _prefs.setInt('exp', Provider.of<GameProvider>(context, listen: false).level);
+    _prefs.setInt('exp', Provider.of<GameProvider>(context, listen: false).exp);
   }
 
 }
