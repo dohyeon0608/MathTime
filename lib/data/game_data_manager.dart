@@ -37,7 +37,7 @@ class GameDataManager {
     await _initPrefs();
     if (!context.mounted) return;
     _prefs.setInt('level', Provider.of<GameProvider>(context, listen: false).level);
-    _prefs.setInt('exp', Provider.of<GameProvider>(context, listen: false).exp);
+    _prefs.setInt('exp', Provider.of<GameProvider>(context, listen: false).currentXP);
   }
 
 }
