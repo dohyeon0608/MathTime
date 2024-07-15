@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:math_time/data/game_data_manager.dart';
 import 'package:math_time/data/game_provider.dart';
 import 'package:math_time/style/text_styles.dart';
 import 'package:math_time/util/util.dart';
 import 'package:provider/provider.dart';
 
+import '../main.dart';
 import 'main_screen.dart';
 
 class ResultScreen extends StatelessWidget {
@@ -12,9 +14,10 @@ class ResultScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     GameProvider provider = Provider.of<GameProvider>(context, listen: false);
+    GameDataManager(context).saveData();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Result'),
+        title: const Text('Result'),
       ),
       body: Center(
         child: Column(

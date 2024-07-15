@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:math_time/screen/main_screen.dart';
 import 'package:provider/provider.dart';
 
+import 'data/game_data_manager.dart';
 import 'data/game_provider.dart';
 
 void main() {
@@ -9,6 +10,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(

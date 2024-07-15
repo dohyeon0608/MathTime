@@ -6,17 +6,21 @@ class GameProvider extends ChangeNotifier {
   GameMode _gameMode = GameMode.fixedAmount;
   GameDifficulty _difficulty = GameDifficulty.easy;
 
-  int _level = 1;
-  int _currentXP = 0;
+  int level = 1;
+  int currentXP = 0;
   int _requiredXP = 100;
 
   void addXP(int xp) {
-    _currentXP += xp;
-    while(_currentXP >= _requiredXP) {
-      _currentXP -= _requiredXP;
-      _level += 1;
-      _requiredXP = 100 + 10 * _level;
+    currentXP += xp;
+    while(currentXP >= _requiredXP) {
+      currentXP -= _requiredXP;
+      level += 1;
+      _requiredXP = 100 + 10 * level;
     }
+    notifyListeners();
+  }
+
+  void refresh() {
     notifyListeners();
   }
 
@@ -33,7 +37,7 @@ class GameProvider extends ChangeNotifier {
   static const Map<GameDifficulty, int> _totalSecondPerDifficulty = {
     GameDifficulty.easy: 150,
     GameDifficulty.normal: 240,
-    GameDifficulty.timesTable: 100,
+    GameDifficulty.timesTable: 120,
   };
 
   static const Map<GameDifficulty, int> _extraExpPerDifficulty = {
@@ -49,8 +53,6 @@ class GameProvider extends ChangeNotifier {
 
   GameMode get gameMode => _gameMode;
   GameDifficulty get difficulty => _difficulty;
-  int get level => _level;
-  int get currentXP => _currentXP;
   int get requiredXP => _requiredXP;
   int get totalProblems => _totalProblemsPerDifficulty[_difficulty]!;
   int get totalSeconds => _totalSecondPerDifficulty[_difficulty]!;
